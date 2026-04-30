@@ -4,164 +4,245 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Duchowa Przestrzeń</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-color: #0f1115;
-            --text-main: #f0f0f0;
-            --text-muted: #888c94;
-            --accent: #d4af37; /* Złoty akcent */
+            --bg-color: #0b0c10;
+            --accent: #d4af37;
+            --text-main: #f1f1f1;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            /* Ukrywamy domyślny pasek scrolla */
-            -ms-overflow-style: none;  
-            scrollbar-width: none;  
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
+
+        /* --- Animowane Tło --- */
+        .aurora-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, #1c2e3d 0%, var(--bg-color) 80%);
+            z-index: -1; animation: pulseBg 10s infinite alternate;
+        }
+        @keyframes pulseBg {
+            0% { opacity: 0.7; } 100% { opacity: 1; }
+        }
+
+        /* --- Nawigacja --- */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 20px; display: flex; justify-content: center; align-items: center;
+        }
+
+        .tabs {
+            display: flex; gap: 5px; background: rgba(0,0,0,0.4);
+            padding: 5px; border-radius: 50px; border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+        }
+
+        .nav-link {
+            font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--text-muted);
+            padding: 10px 22px; border-radius: 50px; cursor: pointer; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link.active { background: var(--accent); color: #000; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
+
+        /* --- Widoki --- */
+        .view { height: 100vh; width: 100vw; display: none; overflow-y: auto; scroll-behavior: smooth; }
+        .view.active { display: block; }
+
+        /* --- Słowo Codzienne --- */
+        #daily-view {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; padding: 40px; box-sizing: border-box;
+        }
+
+        .date-badge {
+            color: var(--accent); font-size: 0.7rem; letter-spacing: 4px;
+            margin-bottom: 20px; font-weight: 600;
+        }
+
+        /* --- Baza (Kafelki) --- */
+        .library-content { padding: 120px 25px 60px; max-width: 900px; margin: 0 auto; }
         
-        body::-webkit-scrollbar {
-            display: none;
+        .section-header {
+            display: flex; align-items: center; gap: 15px; margin: 40px 0 20px;
+        }
+        .section-header hr { flex-grow: 1; border: 0; border-top: 1px solid var(--glass-border); }
+        .section-header span { color: var(--accent); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        .prayer-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
         }
 
-        /* Główny kontener - to on wymusza "przyklejanie się" do ekranu */
-        .app-container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory; /* Magia płynnego scrolla */
-            scroll-behavior: smooth;
+        .prayer-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 25px 15px; border-radius: 24px; text-align: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .prayer-card:hover { border-color: var(--accent); background: rgba(212, 175, 55, 0.05); }
+        .prayer-card i { color: var(--accent); font-size: 1.4rem; margin-bottom: 12px; display: block; opacity: 0.8; }
+        .prayer-card h3 { margin: 0; font-size: 0.9rem; font-weight: 400; letter-spacing: 0.5px; }
+
+        /* --- Modal Skupienia --- */
+        #prayer-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 12, 16, 0.95); backdrop-filter: blur(25px);
+            z-index: 1000; display: none; justify-content: center; align-items: center;
+            padding: 30px; box-sizing: border-box;
+        }
+        #prayer-modal.open { display: flex; animation: fadeIn 0.3s forwards; }
+
+        .modal-content {
+            text-align: center; max-width: 600px; width: 100%;
+            transform: translateY(20px); transition: 0.4s;
+        }
+        #prayer-modal.open .modal-content { transform: translateY(0); }
+
+        .modal-title { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 2rem; margin-bottom: 30px; }
+        .modal-text {
+            font-size: 1.15rem; line-height: 2; color: var(--text-main);
+            font-weight: 300; max-height: 60vh; overflow-y: auto; padding: 0 10px;
+        }
+        .modal-text::-webkit-scrollbar { width: 2px; }
+        .modal-text::-webkit-scrollbar-thumb { background: var(--accent); }
+
+        .close-btn {
+            position: absolute; bottom: 50px; background: var(--glass);
+            border: 1px solid var(--glass-border); color: var(--text-muted);
+            padding: 12px 30px; border-radius: 50px; font-size: 0.7rem;
+            letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
         }
 
-        /* Pojedyncza "karta" na cały ekran */
-        .card {
-            height: 100vh;
-            width: 100vw;
-            scroll-snap-align: start; /* Tu ekran się zatrzymuje */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10%;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        /* Typografia */
-        .category {
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.7rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 8vw, 3rem);
-            margin: 0 0 30px 0;
-            text-align: center;
-            font-weight: 400;
-        }
-
-        .content {
-            font-size: clamp(1rem, 4.5vw, 1.2rem);
-            line-height: 1.8;
-            font-weight: 300;
-            text-align: center;
-            color: var(--text-muted);
-            max-width: 400px;
-        }
-
-        /* Instrukcja scrollowania na pierwszej stronie */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0.6;
-            animation: bounce 2s infinite;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        /* Strzałka w dół (CSS) */
-        .arrow-down {
-            width: 10px;
-            height: 10px;
-            border-right: 2px solid var(--text-main);
-            border-bottom: 2px solid var(--text-main);
-            transform: rotate(45deg);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="aurora-bg"></div>
 
-    <!-- KARTA 1: Okładka -->
-    <section class="card">
-        <div class="category">TWÓJ NIEZBĘDNIK</div>
-        <h2>Znajdź<br>Spokój</h2>
-        <div class="content">Wycisz myśli. Przesuń w dół, aby rozpocząć.</div>
-        
-        <div class="scroll-indicator">
-            <span>Przesuń</span>
-            <div class="arrow-down"></div>
-        </div>
-    </section>
+<nav>
+    <div class="tabs">
+        <div class="nav-link active" id="tab-daily" onclick="changeView('daily')">Słowo</div>
+        <div class="nav-link" id="tab-library" onclick="changeView('library')">Baza</div>
+    </div>
+</nav>
 
-    <!-- KARTA 2 -->
-    <section class="card">
-        <div class="category">PORANEK</div>
-        <h2>Nowy Dzień</h2>
-        <div class="content">
-            Panie, dziękuję Ci za ten nowy poranek. Daj mi siłę, bym dzisiaj kochał bardziej niż wczoraj. 
-            <br><br>
-            Niech każda moja myśl, każde słowo i każdy czyn będzie dzisiaj skierowany ku dobru.
-        </div>
-    </section>
-
-    <!-- KARTA 3 -->
-    <section class="card">
-        <div class="category">W CHWILI ZWĄTPIENIA</div>
-        <h2>Jezu, ufam Tobie</h2>
-        <div class="content">
-            Kiedy świat pędzi za szybko, zatrzymaj moje serce przy Tobie. Oddaję Ci każdy mój lęk i każdy problem.
-            <br><br>
-            Wszystko inne jest tylko tłem dla Twojej łaski.
-        </div>
-    </section>
-
-    <!-- KARTA 4 -->
-    <section class="card">
-        <div class="category">WIECZÓR</div>
-        <h2>Czas odpocząć</h2>
-        <div class="content">
-            Zostawiam ten dzień w Twoich rękach. Przebacz mi moje potknięcia i daj spokojny sen tym, których kocham.
-            <br><br>
-            Amen.
-        </div>
-    </section>
-
+<!-- WIDOK: SŁOWO DNIA -->
+<div id="daily-view" class="view active">
+    <div class="date-badge" id="current-date">CZWARTEK, 30 KWIETNIA</div>
+    <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem; font-style: italic; max-width: 80%; line-height: 1.3;">
+        "Ja jestem drogą i prawdą, i życiem."
+    </h1>
+    <p style="color: var(--text-muted); font-weight: 300; margin-top: 30px; font-size: 1rem; letter-spacing: 1px;">
+        J 14, 6
+    </p>
 </div>
+
+<!-- WIDOK: BIBLIOTEKA -->
+<div id="library-view" class="view">
+    <div class="library-content">
+        
+        <div class="section-header"><span>Fundamenty</span><hr></div>
+        <div class="prayer-grid" id="grid-basic"></div>
+
+        <div class="section-header"><span>Rytm Dnia</span><hr></div>
+        <div class="prayer-grid" id="grid-rhythm"></div>
+
+        <div class="section-header"><span>Wewnętrzny Pokój</span><hr></div>
+        <div class="prayer-grid" id="grid-peace"></div>
+
+        <div class="section-header"><span>Do Ducha Świętego</span><hr></div>
+        <div class="prayer-grid" id="grid-spirit"></div>
+
+    </div>
+</div>
+
+<!-- MODAL MODLITWY -->
+<div id="prayer-modal" onclick="closePrayer()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-title" id="m-title"></div>
+        <div class="modal-text" id="m-text"></div>
+        <button class="close-btn" onclick="closePrayer()">Zamknij</button>
+    </div>
+</div>
+
+<script>
+    const prayers = {
+        basic: [
+            { t: "Ojcze Nasz", i: "fa-cross", p: "Ojcze nasz, któryś jest w niebie, święć się imię Twoje. Przyjdź królestwo Twoje, bądź wola Twoja, jako w niebie tak i na ziemi. Chleba naszego powszedniego daj nam dzisiaj i odpuść nam nasze winy, jako i my odpuszczamy naszym winowajcom. I nie wódź nas na pokuszenie, ale nas zbaw ode złego. Amen." },
+            { t: "Zdrowaś Maryjo", i: "fa-person-praying", p: "Zdrowaś Maryjo, łaski pełna, Pan z Tobą, błogosławionaś Ty między niewiastami i błogosławiony owoc żywota Twojego, Jezus. Święta Maryjo, Matko Boża, módl się za nami grzesznymi teraz i w godzinę śmierci naszej. Amen." },
+            { t: "Skład Apostolski", i: "fa-scroll", p: "Wierzę w Boga, Ojca Wszechmogącego, Stworzyciela nieba i ziemi. I w Jezusa Chrystusa, Syna Jego Jedynego, Pana naszego, który się począł z Ducha Świętego, narodził się z Maryi Panny..." },
+            { t: "Akt Wiary", i: "fa-heart", p: "Wierzę w Ciebie, Boże żywy, w Trójcy jedyny, prawdziwy. Wierzę, coś objawił Boże, Twe słowo mylić nie może." }
+        ],
+        rhythm: [
+            { t: "O Poranku", i: "fa-sun", p: "Panie, w ciszy tego wschodzącego dnia, przychodzę Cię prosić o pokój, mądrość i siłę. Chcę patrzeć dziś na świat oczami pełnymi miłości. Zamknij moje uszy na wszelkie oszczerstwa, strzeż mojego języka od wszelkiego złego. Niech tylko to, co błogosławi, trwa w moim duchu." },
+            { t: "Anioł Pański", i: "fa-bell", p: "Anioł Pański zwiastował Pannie Maryi i poczęła z Ducha Świętego... Oto ja Służebnica Pańska, niech mi się stanie według słowa twego... A Słowo Ciałem się stało i zamieszkało między nami." },
+            { t: "Wieczorne", i: "fa-moon", p: "Zanim spocznę, dziękuję Ci Panie za wszystkie łaski dzisiejszego dnia. Przebacz moje upadki, a Twój pokój niech strzeże mego snu. W ręce Twoje powierzam ducha mojego." }
+        ],
+        peace: [
+            { t: "O spokój duszy", i: "fa-leaf", p: "Panie, daj mi odwagę, bym zmieniał to, co zmienić mogę, cierpliwość, bym znosił to, czego zmienić nie mogę i mądrość, bym odróżniał jedno od drugiego." },
+            { t: "Modlitwa św. Franciszka", i: "fa-dove", p: "Uczyń mnie narzędziem Twojego pokoju. Tam, gdzie nienawiść – pozwól mi siać miłość. Tam, gdzie krzywda – przebaczenie. Tam, gdzie ciemność – światło. Tam, gdzie smutek – radość." },
+            { t: "Ufność", i: "fa-anchor", p: "Jezu, Ty się tym zajmij! Oddaję Ci moją przeszłość, teraźniejszość i przyszłość. Ufam Tobie bezgranicznie." }
+        ],
+        spirit: [
+            { t: "O dary Ducha", i: "fa-fire", p: "Przybądź Duchu Święty, napełnij serca Twoich wiernych i zapal w nich ogień Twojej miłości. Ześlij Ducha Twojego, a powstanie życie i odnowisz oblicze ziemi." },
+            { t: "Veni Creator", i: "fa-wind", p: "O Stworzycielu, Duchu, przyjdź, nawiedź nauczonych przez Cię dusz, racz łaską niebiańską napełnić serca, któreś utworzył." }
+        ]
+    };
+
+    function init() {
+        renderGrid('grid-basic', prayers.basic);
+        renderGrid('grid-rhythm', prayers.rhythm);
+        renderGrid('grid-peace', prayers.peace);
+        renderGrid('grid-spirit', prayers.spirit);
+    }
+
+    function renderGrid(containerId, data) {
+        const container = document.getElementById(containerId);
+        data.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'prayer-card';
+            card.onclick = () => openPrayer(item.t, item.p);
+            card.innerHTML = `<i class="fa-solid ${item.i}"></i><h3>${item.t}</h3>`;
+            container.appendChild(card);
+        });
+    }
+
+    function openPrayer(title, text) {
+        document.getElementById('m-title').innerText = title;
+        document.getElementById('m-text').innerText = text;
+        const modal = document.getElementById('prayer-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('open'), 10);
+    }
+
+    function closePrayer() {
+        const modal = document.getElementById('prayer-modal');
+        modal.classList.remove('open');
+        setTimeout(() => modal.style.display = 'none', 300);
+    }
+
+    function changeView(view) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.getElementById(view + '-view').classList.add('active');
+        document.getElementById('tab-' + view).classList.add('active');
+    }
+
+    window.onload = init;
+</script>
 
 </body>
 </html>
