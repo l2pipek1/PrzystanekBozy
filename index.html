@@ -1,1 +1,217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Duchowa Księga - Responsywna</title>
+    
+    <!-- Biblioteka do efektu książki -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lora:ital@0;1&display=swap" rel="stylesheet">
 
+    <style>
+        :root {
+            --cover-color: #3b1717; /* Ciemniejsza, elegancka okładka */
+            --paper-color: #fcf8f2; /* Cieplejszy odcień papieru */
+            --text-color: #2c3e50;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Lora', serif;
+        }
+
+        /* Główny kontener - dopasowuje się do ekranu */
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* --- Style Stron --- */
+        .page {
+            padding: clamp(15px, 4vw, 40px); /* Skalowanie marginesów wewnętrznych */
+            background-color: var(--paper-color);
+            color: var(--text-color);
+            box-shadow: inset 3px 0px 20px rgba(0,0,0,0.05); /* Lżejszy cień na mobile */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Okładka */
+        .page.-cover {
+            background-color: var(--cover-color);
+            color: #e0e0e0;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 4px 12px 12px 4px;
+        }
+
+        /* Tylna okładka (odbicie) */
+        .page.-cover:nth-child(even) {
+            border-radius: 12px 4px 4px 12px;
+        }
+
+        .page-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Skalowalna typografia */
+        h1.title {
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            color: #8d6e63;
+            border-bottom: 1px solid #d7ccc8;
+            padding-bottom: 8px;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            margin-top: 0;
+        }
+
+        .text {
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            line-height: 1.7;
+            white-space: pre-line;
+            margin-top: 15px;
+            overflow-y: auto; /* Scroll wewnątrz strony, jeśli tekstu jest za dużo na małym ekranie */
+            padding-right: 5px;
+        }
+
+        /* Stylizowany pasek scrolla dla długich tekstów */
+        .text::-webkit-scrollbar {
+            width: 4px;
+        }
+        .text::-webkit-scrollbar-thumb {
+            background: #d7ccc8;
+            border-radius: 4px;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a1887f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="book">
+        
+        <!-- OKŁADKA -->
+        <div class="page -cover" data-density="hard">
+            <div class="page-content">
+                <h1 class="title">DUCHOWY<br>NIEZBĘDNIK</h1>
+                <p style="letter-spacing: 2px; margin-top: 15px; font-size: clamp(0.7rem, 2vw, 1rem);">MODLITEWNIK</p>
+                <div style="margin: 30px auto 0; border-top: 1px solid #ffffff44; width: 40px;"></div>
+                <p style="font-style: italic; font-size: 0.8rem; margin-top: 20px;">Przesuń palcem, aby otworzyć</p>
+            </div>
+        </div>
+
+        <!-- STRONA 1 -->
+        <div class="page">
+            <div class="page-content">
+                <h2>Spis Treści</h2>
+                <div class="text">
+                    1. Modlitwa o poranku
+                    2. Spokój w ciągu dnia
+                    3. Wieczorne dziękczynienie
+                    4. Twoje intencje
+                </div>
+                <div class="page-number">1</div>
+            </div>
+        </div>
+
+        <!-- STRONA 2 -->
+        <div class="page">
+            <div class="page-content">
+                <h2>O Poranku</h2>
+                <div class="text">
+                    Panie, dziękuję Ci za ten nowy poranek. 
+                    Daj mi siłę, bym dzisiaj kochał bardziej niż wczoraj. 
+                    
+                    Niech każda moja myśl, każde słowo i każdy czyn będzie dzisiaj skierowany ku dobru. Prowadź mnie przez ten dzień.
+                </div>
+                <div class="page-number">2</div>
+            </div>
+        </div>
+
+        <!-- STRONA 3 -->
+        <div class="page">
+            <div class="page-content">
+                <h2>W Stresie</h2>
+                <div class="text">
+                    Kiedy świat pędzi za szybko, zatrzymaj moje serce przy Tobie. 
+                    
+                    Jezu, ufam Tobie. Oddaję Ci każdy mój lęk i każdy problem, którego nie potrafię sam rozwiązać. Wszystko inne jest tylko tłem dla Twojej łaski.
+                </div>
+                <div class="page-number">3</div>
+            </div>
+        </div>
+
+        <!-- TYLNA OKŁADKA -->
+        <div class="page -cover" data-density="hard">
+            <div class="page-content" style="justify-content: center; align-items: center;">
+                <h2 style="color: #e0e0e0; border: none; text-align: center;">Koniec Dnia</h2>
+                <p style="text-align: center; font-style: italic; opacity: 0.8;">Odpocznij w Nim.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pobieramy rozmiar okna, żeby dopasować książkę
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        
+        // Optymalne proporcje dla telefonów i desktopów
+        let bookWidth = 350;
+        let bookHeight = 500;
+
+        const pageFlip = new St.PageFlip(document.getElementById('book'), {
+            width: bookWidth, 
+            height: bookHeight,
+            size: "stretch", // Książka rozciąga się w ramach limitów min/max
+            minWidth: 280,   // Bezpieczne minimum dla iPhone SE
+            maxWidth: 450,   // Maksymalna szerokość pojedynczej strony
+            minHeight: 400,
+            maxHeight: 750,
+            maxShadowOpacity: 0.3,
+            showCover: true,
+            usePortrait: true, // NAJWAŻNIEJSZE: Włącza widok jednej strony w pionie
+            mobileScrollSupport: false // Ułatwia chwytanie stron palcem
+        });
+
+        pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+    });
+</script>
+
+</body>
+</html>
