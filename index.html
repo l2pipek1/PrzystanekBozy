@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Duchowa Przestrzeń | Modlitewnik</title>
+    <title>Duchowa Przestrzeń</title>
+    
+    <!-- PWA & Mobile Meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0b0c10">
+
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -27,7 +35,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animowane Tło --- */
+        /* --- Animowane Tło Aurora --- */
         .aurora-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% -20%, #1c2e3d 0%, var(--bg-color) 80%);
@@ -37,15 +45,7 @@
             0% { opacity: 0.7; } 100% { opacity: 1; }
         }
 
-        /* --- Custom Scrollbar --- */
-        #library-view::-webkit-scrollbar { width: 4px; }
-        #library-view::-webkit-scrollbar-track { background: transparent; }
-        #library-view::-webkit-scrollbar-thumb { 
-            background: linear-gradient(to bottom, transparent, var(--accent), transparent); 
-            border-radius: 10px;
-        }
-
-        /* --- Nawigacja --- */
+        /* --- Nawigacja (Tabs) --- */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
             padding: 20px; display: flex; justify-content: center; align-items: center;
@@ -67,10 +67,10 @@
         .nav-link.active { background: var(--accent); color: #000; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
 
         /* --- Widoki --- */
-        .view { height: 100vh; width: 100vw; display: none; overflow-y: auto; scroll-behavior: smooth; }
+        .view { height: 100vh; width: 100vw; display: none; overflow-y: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         .view.active { display: block; }
 
-        /* --- Słowo Codzienne --- */
+        /* --- Widok Główny (Słowo) --- */
         #daily-view {
             display: flex; flex-direction: column; justify-content: center;
             align-items: center; text-align: center; padding: 40px; box-sizing: border-box;
@@ -78,10 +78,10 @@
 
         .date-badge {
             color: var(--accent); font-size: 0.7rem; letter-spacing: 4px;
-            margin-bottom: 20px; font-weight: 600;
+            margin-bottom: 20px; font-weight: 600; text-transform: uppercase;
         }
 
-        /* --- Baza (Kafelki) --- */
+        /* --- Widok Bazy (Grid) --- */
         .library-content { padding: 120px 25px 60px; max-width: 900px; margin: 0 auto; }
         
         .section-header {
@@ -91,23 +91,23 @@
         .section-header span { color: var(--accent); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; }
 
         .prayer-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 12px;
         }
 
         .prayer-card {
             background: var(--glass); border: 1px solid var(--glass-border);
             padding: 25px 15px; border-radius: 24px; text-align: center;
-            cursor: pointer; transition: all 0.3s ease;
+            cursor: pointer; transition: all 0.2s ease;
         }
-        .prayer-card:active { transform: scale(0.95); background: rgba(212, 175, 55, 0.1); }
+        .prayer-card:active { transform: scale(0.92); background: rgba(212, 175, 55, 0.1); }
         .prayer-card i { color: var(--accent); font-size: 1.3rem; margin-bottom: 12px; display: block; opacity: 0.8; }
         .prayer-card h3 { margin: 0; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.5px; }
 
-        /* --- Modal Skupienia --- */
+        /* --- Modal (Focus Mode) --- */
         #prayer-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 12, 16, 0.97); backdrop-filter: blur(25px);
+            background: rgba(11, 12, 16, 0.98); backdrop-filter: blur(25px);
             z-index: 1000; display: none; justify-content: center; align-items: center;
             padding: 30px; box-sizing: border-box;
         }
@@ -119,14 +119,12 @@
         }
         #prayer-modal.open .modal-content { transform: translateY(0); }
 
-        .modal-title { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 2rem; margin-bottom: 30px; }
+        .modal-title { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 2rem; margin-bottom: 25px; }
         .modal-text {
-            font-size: 1.15rem; line-height: 2; color: var(--text-main);
-            font-weight: 300; max-height: 60vh; overflow-y: auto; padding: 0 15px;
+            font-size: 1.15rem; line-height: 1.9; color: var(--text-main);
+            font-weight: 300; max-height: 65vh; overflow-y: auto; padding: 0 10px;
         }
-        .modal-text::-webkit-scrollbar { width: 2px; }
-        .modal-text::-webkit-scrollbar-thumb { background: var(--accent); }
-
+        
         .hint { margin-top: 40px; color: var(--accent); font-size: 0.6rem; letter-spacing: 3px; opacity: 0.4; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -143,37 +141,37 @@
     </div>
 </nav>
 
-<!-- WIDOK: SŁOWO DNIA -->
+<!-- WIDOK 1: SŁOWO DNIA -->
 <div id="daily-view" class="view active">
-    <div class="date-badge" id="current-date">PIĄTEK, 1 MAJA</div>
-    <h1 style="font-family: 'Playfair Display'; font-size: 2.3rem; font-style: italic; max-width: 80%; line-height: 1.3;">
-        "Pokój zostawiam wam,<br>pokój mój daję wam."
+    <div class="date-badge" id="current-date">Piątek, 1 Maja</div>
+    <h1 style="font-family: 'Playfair Display'; font-size: 2.3rem; font-style: italic; max-width: 85%; line-height: 1.3;">
+        "Pokój mój daję wam,<br>nie tak jak daje świat."
     </h1>
     <p style="color: var(--text-muted); font-weight: 300; margin-top: 30px; font-size: 0.9rem; letter-spacing: 1px;">
-        J 14, 27
+        Ewangelia wg św. Jana
     </p>
 </div>
 
-<!-- WIDOK: BIBLIOTEKA -->
+<!-- WIDOK 2: BIBLIOTEKA (BAZA) -->
 <div id="library-view" class="view">
     <div class="library-content">
         
         <div class="section-header"><span>Fundamenty</span><hr></div>
         <div class="prayer-grid" id="grid-basic"></div>
 
-        <div class="section-header"><span>Rytm Dnia</span><hr></div>
+        <div class="section-header"><span>Pory Dnia</span><hr></div>
         <div class="prayer-grid" id="grid-rhythm"></div>
 
         <div class="section-header"><span>Wewnętrzny Pokój</span><hr></div>
         <div class="prayer-grid" id="grid-peace"></div>
 
-        <div class="section-header"><span>Do Ducha Świętego</span><hr></div>
+        <div class="section-header"><span>Duch Święty</span><hr></div>
         <div class="prayer-grid" id="grid-spirit"></div>
 
     </div>
 </div>
 
-<!-- MODAL MODLITWY (Zamyka się po kliknięciu gdziekolwiek) -->
+<!-- MODAL: POWIĘKSZONA MODLITWA -->
 <div id="prayer-modal" onclick="closePrayer()">
     <div class="modal-content">
         <div class="modal-title" id="m-title"></div>
@@ -183,27 +181,27 @@
 </div>
 
 <script>
-    // --- EDYCJA MODLITW TUTAJ ---
+    // --- KONFIGURACJA MODLITW (Tu edytuj treści) ---
     const prayers = {
         basic: [
             { t: "Ojcze Nasz", i: "fa-cross", p: "Ojcze nasz, któryś jest w niebie, święć się imię Twoje. Przyjdź królestwo Twoje, bądź wola Twoja, jako w niebie tak i na ziemi. Chleba naszego powszedniego daj nam dzisiaj i odpuść nam nasze winy, jako i my odpuszczamy naszym winowajcom. I nie wódź nas na pokuszenie, ale nas zbaw ode złego. Amen." },
             { t: "Zdrowaś Maryjo", i: "fa-person-praying", p: "Zdrowaś Maryjo, łaski pełna, Pan z Tobą, błogosławionaś Ty między niewiastami i błogosławiony owoc żywota Twojego, Jezus. Święta Maryjo, Matko Boża, módl się za nami grzesznymi teraz i w godzinę śmierci naszej. Amen." },
-            { t: "Skład Apostolski", i: "fa-scroll", p: "Wierzę w Boga, Ojca Wszechmogącego, Stworzyciela nieba i ziemi. I w Jezusa Chrystusa, Syna Jego Jedynego, Pana naszego, który się począł z Ducha Świętego, narodził się z Maryi Panny, umęczon pod Ponckim Piłatem, ukrzyżowan, umarł i pogrzebion. Zstąpił do piekieł, trzeciego dnia zmartwychwstał. Wstąpił na niebiosa, siedzi po prawicy Boga Ojca Wszechmogącego. Stamtąd przyjdzie sądzić żywych i umarłych. Wierzę w Ducha Świętego, święty Kościół powszechny, świętych obcowanie, grzechów odpuszczenie, ciała zmartwychwstanie, żywot wieczny. Amen." },
+            { t: "Skład Apostolski", i: "fa-scroll", p: "Wierzę w Boga, Ojca Wszechmogącego, Stworzyciela nieba i ziemi. I w Jezusa Chrystusa, Syna Jego Jedynego, Pana naszego... Zstąpił do piekieł, trzeciego dnia zmartwychwstał. Wstąpił na niebiosa, siedzi po prawicy Boga Ojca Wszechmogącego." },
             { t: "Chwała Ojcu", i: "fa-sun", p: "Chwała Ojcu i Synowi, i Duchowi Świętemu. Jak była na początku, teraz i zawsze, i na wieki wieków. Amen." }
         ],
         rhythm: [
-            { t: "O Poranku", i: "fa-cloud-sun", p: "Panie, w ciszy tego wschodzącego dnia, przychodzę Cię prosić o pokój, mądrość i siłę. Chcę patrzeć dziś na świat oczami pełnymi miłości. Zamknij moje uszy na wszelkie oszczerstwa, strzeż mojego języka od wszelkiego złego. Niech tylko to, co błogosławi, trwa w moim duchu." },
-            { t: "Anioł Pański", i: "fa-bell", p: "Anioł Pański zwiastował Pannie Maryi i poczęła z Ducha Świętego... Oto ja Służebnica Pańska, niech mi się stanie według słowa twego... A Słowo Ciałem się stało i zamieszkało między nami." },
-            { t: "Wieczorne", i: "fa-moon", p: "Zanim spocznę, dziękuję Ci Panie za wszystkie łaski dzisiejszego dnia. Przebacz moje upadki, a Twój pokój niech strzeże mego snu. W ręce Twoje powierzam ducha mojego." }
+            { t: "Poranna", i: "fa-cloud-sun", p: "Panie, w ciszy tego dnia przychodzę Cię prosić o pokój, mądrość i siłę. Chcę patrzeć dziś na świat oczami pełnymi miłości. Bądź ze mną w każdej minucie tego dnia." },
+            { t: "Anioł Pański", i: "fa-bell", p: "Anioł Pański zwiastował Pannie Maryi i poczęła z Ducha Świętego. Oto ja Służebnica Pańska, niech mi się stanie według słowa twego." },
+            { t: "Wieczorna", i: "fa-moon", p: "Dziękuję Ci Panie za łaski tego dnia. Przebacz moje upadki i daj mi spokojny sen pod Twoją obroną. W ręce Twoje powierzam ducha mojego." }
         ],
         peace: [
-            { t: "O spokój duszy", i: "fa-leaf", p: "Panie, daj mi odwagę, bym zmieniał to, co zmienić mogę, cierpliwość, bym znosił to, czego zmienić nie mogę i mądrość, bym odróżniał jedno od drugiego." },
-            { t: "Św. Franciszek", i: "fa-dove", p: "Uczyń mnie narzędziem Twojego pokoju. Tam, gdzie nienawiść – pozwól mi siać miłość. Tam, gdzie krzywda – przebaczenie. Tam, gdzie ciemność – światło. Tam, gdzie smutek – radość." },
-            { t: "Ufność (Akt)", i: "fa-anchor", p: "Jezu, Ty się tym zajmij! Oddaję Ci moją przeszłość, teraźniejszość i przyszłość. Ufam Tobie bezgranicznie i w Twoje ręce składam moje troski." }
+            { t: "O spokój", i: "fa-leaf", p: "Boże, użycz mi pogody ducha, abym godził się z tym, czego nie mogę zmienić; odwagi, abym zmieniał to, co mogę zmienić; i mądrości, abym odróżniał jedno od drugiego." },
+            { t: "Akt Ufności", i: "fa-anchor", p: "Jezu, Ty się tym zajmij! Oddaję Ci moją przeszłość, teraźniejszość i przyszłość. Ufam Tobie." },
+            { t: "Św. Franciszek", i: "fa-dove", p: "Uczyń mnie narzędziem Twojego pokoju. Tam, gdzie nienawiść – pozwól mi siać miłość. Tam, gdzie mrok – światło." }
         ],
         spirit: [
-            { t: "O dary Ducha", i: "fa-fire", p: "Przybądź Duchu Święty, napełnij serca Twoich wiernych i zapal w nich ogień Twojej miłości. Ześlij Ducha Twojego, a powstanie życie i odnowisz oblicze ziemi." },
-            { t: "Veni Creator", i: "fa-wind", p: "O Stworzycielu, Duchu, przyjdź, nawiedź nauczonych przez Cię dusz, racz łaską niebiańską napełnić serca, któreś utworzył." }
+            { t: "Przybądź Duchu", i: "fa-fire", p: "Przybądź Duchu Święty, napełnij serca Twoich wiernych i zapal w nich ogień Twojej miłości. Ześlij Ducha Twojego, a powstanie życie." },
+            { t: "O dary", i: "fa-wind", p: "Duchu Święty, proszę Cię o dar mądrości, rozumu, rady, męstwa, umiejętności, pobożności i bojaźni Bożej." }
         ]
     };
 
@@ -214,36 +212,28 @@
         renderGrid('grid-spirit', prayers.spirit);
     }
 
-    function renderGrid(containerId, data) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
-        data.forEach(item => {
+    function renderGrid(id, data) {
+        const g = document.getElementById(id);
+        data.forEach(m => {
             const card = document.createElement('div');
             card.className = 'prayer-card';
-            card.onclick = (e) => {
-                e.stopPropagation();
-                openPrayer(item.t, item.p);
-            };
-            card.innerHTML = `<i class="fa-solid ${item.i}"></i><h3>${item.t}</h3>`;
-            container.appendChild(card);
+            card.onclick = () => openPrayer(m.t, m.p);
+            card.innerHTML = `<i class="fa-solid ${m.i}"></i><h3>${m.t}</h3>`;
+            g.appendChild(card);
         });
     }
 
-    function changeView(viewName) {
-        // Ukryj wszystko
+    function changeView(name) {
         document.querySelectorAll('.view').forEach(v => {
             v.classList.remove('active');
             v.style.display = 'none';
         });
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
 
-        // Pokaż wybrany
-        const activeView = document.getElementById(viewName + '-view');
-        activeView.style.display = (viewName === 'daily') ? 'flex' : 'block';
-        activeView.classList.add('active');
-        document.getElementById('tab-' + viewName).classList.add('active');
-
-        if(viewName === 'library') activeView.scrollTop = 0;
+        const active = document.getElementById(name + '-view');
+        active.style.display = (name === 'daily') ? 'flex' : 'block';
+        active.classList.add('active');
+        document.getElementById('tab-' + name).classList.add('active');
     }
 
     function openPrayer(title, text) {
@@ -258,6 +248,13 @@
         const modal = document.getElementById('prayer-modal');
         modal.classList.remove('open');
         setTimeout(() => modal.style.display = 'none', 300);
+    }
+
+    // --- PWA: OFFLINE & SERVICE WORKER ---
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("Tryb Offline aktywny"))
+        .catch(err => console.log("Błąd SW:", err));
     }
 
     window.onload = init;
