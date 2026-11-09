@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Przystanek Boży — wspólnota modlitwy</title>
+<style>
+:root{--navy:#172638;--navy2:#23384d;--gold:#b99558;--cream:#f5f0e6;--paper:#fffdf8;--muted:#687482;--line:#e7dfd1;--green:#526d5b}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:#243243;font-family:Georgia,'Times New Roman',serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+header{background:var(--navy);color:#fff;padding:15px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:5;box-shadow:0 3px 16px #101c2a33}
+.brand{display:flex;align-items:center;gap:10px;font-size:17px;letter-spacing:1.6px}.cross{color:#d8bd88;font-size:28px}
+nav{display:flex;gap:6px;flex-wrap:wrap}nav button{border:0;background:transparent;color:#e9e3d8;padding:9px 11px;border-radius:20px;font:14px Arial}nav button.active,nav button:hover{background:#ffffff1c;color:#fff}
+main{max-width:1120px;margin:auto;padding:28px 20px 70px}.hero{background:linear-gradient(110deg,#132337dd,#253b51bb),url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1800&q=85') center/cover;color:white;border-radius:22px;padding:55px 38px;min-height:290px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 12px 35px #17263824}
+.kicker{color:#e2c995;text-transform:uppercase;letter-spacing:2px;font:12px Arial}.hero h1{font-size:clamp(34px,6vw,58px);font-weight:normal;line-height:1.05;margin:14px 0}.hero p{max-width:600px;color:#f0eee9;font:17px/1.6 Arial;margin:0 0 22px}
+.btn{border:0;border-radius:8px;background:var(--gold);color:#172638;padding:12px 18px;font:bold 14px Arial}.btn.secondary{background:transparent;border:1px solid #c8b58f;color:inherit}.btn.dark{background:var(--navy);color:white}.btn.light{background:#eee5d5;color:#27374a}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.section{display:none}.section.active{display:block}.heading{margin:30px 0 17px}.heading small{color:var(--gold);font:12px Arial;letter-spacing:1.8px;text-transform:uppercase}.heading h2{font-weight:normal;font-size:32px;margin:6px 0}.heading p{font:15px/1.6 Arial;color:var(--muted);margin:5px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:20px;box-shadow:0 5px 18px #17263809}.card h3{font-size:21px;font-weight:normal;margin:8px 0}.card p{font:14px/1.6 Arial;color:#536171}.tag{display:inline-block;color:#80663b;background:#f3ead8;border-radius:30px;padding:5px 9px;font:11px Arial;letter-spacing:.5px}.verse{background:#e9e0d1;border-left:3px solid var(--gold);padding:17px 20px;font-size:20px;line-height:1.5;margin:15px 0}.muted{color:var(--muted);font:13px Arial}.intent{display:flex;flex-direction:column;gap:12px}.intent .meta{display:flex;justify-content:space-between;gap:10px;align-items:center}.intent h3{margin:0}.intent .prayer{font:15px/1.65 Arial;color:#384858;white-space:pre-wrap}.intent .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:12px}.tiny{font:12px Arial;color:var(--muted)}.form{display:grid;gap:13px}.form label{font:13px Arial;color:#526071;display:grid;gap:6px}.form input,.form textarea,.form select{border:1px solid #d9d1c4;background:white;border-radius:8px;padding:12px;color:#243243;width:100%;font:15px Arial}.form textarea{min-height:110px;resize:vertical}.row{display:flex;gap:12px}.row>*{flex:1}.community{background:#f7f3eb;border-radius:10px;padding:11px;display:grid;gap:7px}.people{display:flex;align-items:center;padding-left:2px}.person{width:27px;height:27px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#e7dcc8;border:2px solid #fffdf8;margin-left:-3px;color:#5c4c33;font:bold 10px Arial}.textbtn{border:0;background:none;color:#8b7047;text-align:left;padding:3px 0;font:12px Arial;text-decoration:underline}.notice{background:#f5ead6;border:1px solid #e7d6b6;padding:12px;border-radius:9px;font:12px/1.5 Arial;color:#66583f}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat{background:#fffdf8;border:1px solid var(--line);border-radius:12px;padding:15px}.stat b{display:block;font-size:25px;color:var(--navy);font-weight:normal}.stat span{font:12px Arial;color:var(--muted)}
+footer{background:var(--navy);color:#d9dfe5;padding:25px 20px;text-align:center;font:12px/1.7 Arial}.modal{position:fixed;inset:0;background:#0c1724aa;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.open{display:flex}.dialog{background:var(--paper);border-radius:16px;padding:24px;width:min(520px,100%);max-height:90vh;overflow:auto}.dialoghead{display:flex;justify-content:space-between;align-items:center}.x{border:0;background:none;font-size:25px;color:#64717d}.empty{text-align:center;padding:35px;color:var(--muted);font:14px Arial}
+@media(max-width:760px){header{align-items:flex-start;flex-direction:column;padding:13px 16px}nav{width:100%;overflow:auto;flex-wrap:nowrap}nav button{white-space:nowrap}.grid{grid-template-columns:1fr}.hero{padding:35px 23px}.stats{grid-template-columns:1fr 1fr}.row{flex-direction:column}main{padding:18px 14px 50px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><span class="cross">✝</span><span>PRZYSTANEK BOŻY</span></div>
+ <nav id="nav">
+  <button class="active" data-tab="home">Strona główna</button><button data-tab="intentions">Intencje</button><button data-tab="prayers">Modlitewnik</button><button data-tab="word">Słowo Boże</button><button data-tab="candles">Świece</button><button data-tab="profile">Moje konto</button>
+ </nav>
+</header>
+<main>
+<section id="home" class="section active">
+ <div class="hero"><span class="kicker">Miejsce wspólnej modlitwy</span><h1>Nie jesteś sam.<br>Pomódlmy się razem.</h1><p>Zatrzymaj się na chwilę. Powierz Bogu to, co nosisz w sercu, i wesprzyj modlitwą drugiego człowieka.</p><div class="actions"><button class="btn" onclick="openIntent()">Powierz intencję</button><button class="btn secondary" onclick="showTab('intentions')">Pomódl się za kogoś</button></div></div>
+ <div class="stats"><div class="stat"><b id="statIntentions">3</b><span>intencje w tej demonstracji</span></div><div class="stat"><b id="statPrayers">28</b><span>deklaracje modlitwy</span></div><div class="stat"><b id="statCandles">12</b><span>zapalone świece</span></div></div>
+ <div class="heading"><small>Na dzisiaj</small><h2>Chwila ze Słowem</h2></div>
+ <div class="card"><span class="tag">PSALM 46,2</span><div class="verse">„Bóg jest dla nas ucieczką i mocą: łatwo znaleźć u Niego pomoc w trudnościach”.</div><p>Nie wszystko musisz unieść sam. Znajdź dziś chwilę, by powierzyć Bogu swoje troski.</p><button class="btn light" onclick="showTab('word')">Czytaj więcej</button></div>
+ <div class="heading"><small>Wspólnota</small><h2>Intencje, które czekają na modlitwę</h2></div><div id="homeIntents" class="grid"></div>
+ <div class="heading"><small>Drobne gesty</small><h2>Małe smaczki wspólnoty</h2></div>
+ <div class="grid">
+  <article class="card"><span class="tag">CODZIENNIE</span><h3>🙏 Modlitewne postanowienie</h3><p>Wybierz jedną osobę z tablicy i wróć do jej intencji w swojej dzisiejszej modlitwie.</p><button class="btn light" onclick="showTab('intentions')">Wybierz intencję</button></article>
+  <article class="card"><span class="tag">WDZIĘCZNOŚĆ</span><h3>💛 Słowo wsparcia</h3><p>Nie zawsze trzeba znać czyjąś historię. Czasem wystarczy krótkie: „Pamiętam o Tobie w modlitwie”.</p><button class="btn light" onclick="showTab('intentions')">Wesprzyj kogoś</button></article>
+  <article class="card"><span class="tag">WSPÓLNOTA</span><h3>🕯️ Intencja tygodnia</h3><p>W tym tygodniu pamiętajmy szczególnie o osobach samotnych i tych, którzy przeżywają trudny czas.</p><button class="btn light" onclick="showTab('candles')">Zapal świecę</button></article>
+ </div>
+</section>
+<section id="intentions" class="section">
+ <div class="heading"><small>Wspólnota modlitwy</small><h2>Tablica intencji</h2><p>Wybierz intencję i pomódl się za osobę, która ją powierzyła. Możesz też dodać własną.</p></div>
+ <div class="actions"><button class="btn" onclick="openIntent()">＋ Dodaj intencję</button><span class="tiny" style="align-self:center">Widoczne są tylko intencje publiczne</span></div>
+ <div id="intentList" class="grid" style="margin-top:18px"></div>
+ <p class="notice" style="margin-top:18px">Pamiętaj: nie publikuj danych osobowych, adresów, numerów telefonów ani szczegółów, które pozwalają zidentyfikować inne osoby bez ich zgody. Intencje wrażliwe możesz zachować jako prywatne.</p>
+</section>
+<section id="prayers" class="section">
+ <div class="heading"><small>Modlitewnik</small><h2>Znajdź modlitwę na dziś</h2><p>Wybierz chwilę i słowa, które pomogą Ci zwrócić serce ku Bogu.</p></div>
+ <div class="grid">
+  <article class="card"><span class="tag">PORANEK</span><h3>Modlitwa na początek dnia</h3><p>Panie, dziękuję Ci za dar nowego dnia. Prowadź moje myśli, słowa i czyny. Pomóż mi dostrzegać dobro i nieść pokój spotkanym ludziom. Amen.</p></article>
+  <article class="card"><span class="tag">WIECZÓR</span><h3>Modlitwa przed snem</h3><p>Boże, dziękuję Ci za wszystko, co przyniósł ten dzień. Przebacz moje błędy, otocz opieką moich bliskich i daj mi spokojnie odpocząć. Amen.</p></article>
+  <article class="card"><span class="tag">TRUDNE CHWILE</span><h3>O siłę i nadzieję</h3><p>Jezu, kiedy brakuje mi sił, przypomnij mi, że nie jestem sam. Daj mi cierpliwość, odwagę i ufność, by zrobić kolejny krok. Amen.</p></article>
+  <article class="card"><span class="tag">POWOŁANIE</span><h3>O rozeznanie drogi</h3><p>Panie, pomóż mi rozpoznać, do czego mnie zapraszasz. Otwórz moje serce na Twoje prowadzenie i naucz mnie odpowiadać miłością. Amen.</p></article>
+  <article class="card"><span class="tag">MARYJNA</span><h3>Pod Twoją obronę</h3><p>Pod Twoją obronę uciekamy się, Święta Boża Rodzicielko, naszymi prośbami racz nie gardzić w potrzebach naszych, ale od wszelakich złych przygód racz nas zawsze wybawiać, Panno chwalebna i błogosławiona. Amen.</p></article>
+  <article class="card"><span class="tag">MISJE</span><h3>Za głoszących Ewangelię</h3><p>Boże, umacniaj tych, którzy niosą Ewangelię ludziom na całym świecie. Daj im odwagę, pokorę i serca otwarte na drugiego człowieka. Amen.</p></article>
+ </div>
+</section>
+<section id="word" class="section">
+ <div class="heading"><small>Lectio na dziś</small><h2>Słowo Boże</h2><p>Przeczytaj spokojnie. Zatrzymaj się przy jednym zdaniu.</p></div>
+ <div class="card"><span class="tag">EWANGELIA WEDŁUG ŚWIĘTEGO MATEUSZA 11,28</span><div class="verse">„Przyjdźcie do Mnie wszyscy, którzy utrudzeni i obciążeni jesteście, a Ja was pokrzepię”.</div><h3>Na chwilę zatrzymania</h3><p>Jezus nie obiecuje, że życie będzie wolne od trudności. Zaprasza jednak, by nie przeżywać ich samotnie. Możesz przyjść do Niego dokładnie taki, jaki jesteś – ze zmęczeniem, pytaniami i nadzieją.</p><p><b>Pytanie do osobistej modlitwy:</b> Co chciałbym dziś powierzyć Jezusowi?</p><button class="btn light" onclick="copyText('Przyjdźcie do Mnie wszyscy, którzy utrudzeni i obciążeni jesteście, a Ja was pokrzepię. (Mt 11,28)')">Kopiuj cytat</button></div>
+ <div class="heading"><small>Mały krok</small><h2>Przeczytaj dzisiejszą Ewangelię</h2><p>W prototypie prezentujemy przykładowy fragment. Docelowo można podłączyć aktualny kalendarz liturgiczny.</p></div>
+</section>
+<section id="candles" class="section">
+ <div class="heading"><small>Symbol pamięci i modlitwy</small><h2>Zapal wirtualną świecę</h2><p>To symboliczny znak pamięci o kimś lub powierzenia Bogu ważnej sprawy.</p></div>
+ <div class="grid" id="candleGrid">
+  <div class="card" style="text-align:center"><div style="font-size:54px">🕯️</div><h3>Za bliskich</h3><p>Za tych, których kochamy i nosimy w sercu.</p><button class="btn light" onclick="lightCandle('Za bliskich')">Zapal świecę</button></div>
+  <div class="card" style="text-align:center"><div style="font-size:54px">🕯️</div><h3>Za chorych</h3><p>Za osoby potrzebujące siły, opieki i nadziei.</p><button class="btn light" onclick="lightCandle('Za chorych')">Zapal świecę</button></div>
+  <div class="card" style="text-align:center"><div style="font-size:54px">🕯️</div><h3>O pokój</h3><p>Za pokój na świecie i pojednanie między ludźmi.</p><button class="btn light" onclick="lightCandle('O pokój')">Zapal świecę</button></div>
+ </div><div id="candleThanks" class="notice" style="margin-top:16px;display:none"></div>
+</section>
+<section id="profile" class="section">
+ <div class="heading"><small>Twoja przestrzeń</small><h2>Moje konto</h2><p>Zaloguj się, aby zarządzać swoimi intencjami i zapisanymi modlitwami.</p></div>
+ <div class="grid">
+  <div class="card"><h3>Logowanie przez TikToka</h3><p>Docelowo połączymy konto przez oficjalny mechanizm TikTok Login Kit.</p><button class="btn dark" onclick="alert('To jest demonstracja. Prawdziwe logowanie TikTok wymaga rejestracji aplikacji, kluczy OAuth i konfiguracji po stronie serwera.')">Kontynuuj z TikTokiem</button></div>
+  <div class="card"><h3>Logowanie e-mail</h3><form class="form" onsubmit="event.preventDefault();alert('To tylko demonstracja interfejsu. Konta nie są jeszcze tworzone.');"><label>Adres e-mail<input type="email" placeholder="adres@email.pl" required></label><label>Hasło<input type="password" placeholder="••••••••" required></label><button class="btn" type="submit">Zaloguj się</button></form></div>
+  <div class="card"><h3>Przeglądaj bez konta</h3><p>Możesz czytać publiczne intencje i modlitwy bez rejestracji. W tej wersji dane pozostają demonstracyjne.</p><button class="btn light" onclick="showTab('intentions')">Przeglądaj intencje</button></div>
+ </div>
+ <p class="notice" style="margin-top:18px">Uwaga: obecny prototyp nie tworzy prawdziwych kont ani nie wysyła danych do serwera. Nie wpisuj prawdziwego hasła ani poufnych informacji.</p>
+</section>
+</main>
+<footer>✝ PRZYSTANEK BOŻY · Miejsce wspólnej modlitwy<br>Prototyp demonstracyjny — treści i liczniki są przykładowe.</footer>
+<div class="modal" id="intentModal"><div class="dialog"><div class="dialoghead"><h2 style="font-weight:normal;margin:0">Powierz intencję</h2><button class="x" onclick="closeIntent()">×</button></div><p class="muted">Napisz tyle, ile chcesz. Możesz opublikować intencję publicznie albo zachować ją tylko dla siebie.</p>
+<form class="form" id="intentForm"><label>Twoja intencja<textarea id="intentText" maxlength="500" required placeholder="Proszę o modlitwę za..."></textarea></label><div class="row"><label>Podpis (opcjonalnie)<input id="intentName" maxlength="30" placeholder="np. Ania lub Anonim"></label><label>Widoczność<select id="intentPrivacy"><option value="public">Publiczna</option><option value="private">Prywatna</option></select></label></div><label class="muted" style="display:flex;grid-template-columns:20px 1fr;align-items:start"><input id="intentConsent" type="checkbox" required style="width:auto;margin:2px 0"> Potwierdzam, że mam prawo udostępnić tę treść i nie zawiera ona danych osobowych innych osób.</label><div class="notice">W prawdziwej usłudze intencje prywatne będą widoczne wyłącznie dla autora i uprawnionych administratorów. Tutaj to tylko demonstracja w tej przeglądarce.</div><button class="btn" type="submit">Dodaj intencję</button></form></div></div>
+<script>
+const seed=[
+{id:1,text:"Proszę o modlitwę za zdrowie mojej mamy. Przed nią ważne leczenie. Proszę, pamiętajcie o niej.",name:"Anonim",privacy:"public",prayers:12},
+{id:2,text:"Proszę o siłę i pokój w rodzinie. O zgodę, cierpliwość i wzajemne zrozumienie.",name:"Maria",privacy:"public",prayers:9},
+{id:3,text:"Proszę Boga o pomoc w rozeznaniu mojej drogi życiowej i odwagi do podjęcia właściwej decyzji.",name:"Michał",privacy:"public",prayers:7}
+];
+seed[0].people=[{name:"Anna"},{name:"Marek"},{name:"Kasia"}];seed[1].people=[{name:"Tomek"},{name:"Ewa"}];seed[2].people=[{name:"Julia"}];
+let intentions=seed.slice(),prayers=28,candles=12,filter="public";
+function showTab(id){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='intentions')renderIntentions()}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+function card(i){const people=(i.people||[]);return `<article class="card intent"><div class="meta"><span class="tag">INTENCJA</span><span class="tiny">${escapeHtml(i.name||'Anonim')}</span></div><div class="prayer">${escapeHtml(i.text)}</div><div class="community"><div class="tiny"><b>🙏 Modlili się:</b> ${people.length?people.slice(0,4).map(p=>escapeHtml(p.name)).join(' · '):'Bądź pierwszą osobą'}${people.length>4?' i '+(people.length-4)+' innych':''}</div>${people.length?`<div class="people">${people.slice(0,5).map(p=>`<span class="person" title="${escapeHtml(p.name)}">${escapeHtml(initials(p.name))}</span>`).join('')}</div>`:''}<div class="tiny">Każda modlitwa ma znaczenie. Dziękujemy za obecność.</div></div><div class="foot"><span class="tiny">🙏 ${i.prayers} deklaracji modlitwy</span><button class="btn light" onclick="pray(${i.id})">Pomodliłem/am się</button></div><button class="textbtn" onclick="sendThanks(${i.id})">♡ Podziękuj osobom modlącym się</button></article>`}
+function renderIntentions(){let shown=intentions.filter(i=>i.privacy==='public');document.getElementById('intentList').innerHTML=shown.length?shown.map(card).join(''):'<div class="empty">Na razie nie ma publicznych intencji.</div>';document.getElementById('homeIntents').innerHTML=shown.slice(0,3).map(card).join('')}
+function filterIntentions(f){filter='public';renderIntentions()}
+function initials(name){return name.split(/\\s+/).map(x=>x[0]||'').join('').slice(0,2).toUpperCase()}
+function pray(id){let i=intentions.find(x=>x.id===id);if(i&&i.privacy==='public'){let who=prompt('Jak wyświetlić Twoje imię przy tej intencji? Wpisz imię lub zostaw puste, aby modlić się anonimowo.','Gość');if(who===null)return;who=who.trim()||'Anonimowy gość';i.people=i.people||[];if(!i.people.some(p=>p.name.toLowerCase()===who.toLowerCase())){i.people.push({name:who});i.prayers++;prayers++;document.getElementById('statPrayers').textContent=prayers;renderIntentions()}else{alert('Już jesteś na liście osób modlących się za tę intencję. ❤️')}}}
+function sendThanks(id){let i=intentions.find(x=>x.id===id);if(!i)return;alert('W prawdziwej wersji autor intencji będzie mógł wysłać podziękowanie każdej osobie z listy. ❤️');}
+function openIntent(){document.getElementById('intentModal').classList.add('open')}
+function closeIntent(){document.getElementById('intentModal').classList.remove('open')}
+document.getElementById('intentForm').addEventListener('submit',e=>{e.preventDefault();const privacy=document.getElementById('intentPrivacy').value;intentions.unshift({id:Date.now(),text:document.getElementById('intentText').value,name:document.getElementById('intentName').value.trim()||'Anonim',privacy,prayers:0,people:[]});document.getElementById('intentForm').reset();closeIntent();if(privacy==='public'){document.getElementById('statIntentions').textContent=Number(document.getElementById('statIntentions').textContent)+1;showTab('intentions')}else{alert('Intencja prywatna nie jest publikowana na tablicy. W tej demonstracji nie ma jeszcze kont ani trwałego prywatnego zapisu.');showTab('home')}});
+function lightCandle(label){candles++;document.getElementById('statCandles').textContent=candles;let el=document.getElementById('candleThanks');el.style.display='block';el.textContent='🕯️ Zapalono symboliczną świecę: '+label+'. Niech będzie znakiem pamięci i modlitwy.'}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function copyText(s){navigator.clipboard?.writeText(s).then(()=>alert('Skopiowano cytat.')).catch(()=>alert(s))}
+renderIntentions();
+</script>
+</body></html>
