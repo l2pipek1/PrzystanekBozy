@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Przystanek Boży — wspólnota modlitwy</title>
+<!-- Konfiguracja publiczna Supabase. Klucz sb_publishable_ jest przeznaczony do aplikacji przeglądarkowych. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://svpnilpecddzjofcpycs.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_O6lsK3qz7Mm7z4mSDqjqHQ_hKgFat4A";
+  window.pbSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  window.pbSupabaseReady = true;
+</script>
 <style>
 :root{--navy:#172638;--navy2:#23384d;--gold:#b99558;--cream:#f5f0e6;--paper:#fffdf8;--muted:#687482;--line:#e7dfd1;--green:#526d5b}
 *{box-sizing:border-box}body{margin:0;background:var(--cream);color:#243243;font-family:Georgia,'Times New Roman',serif}
@@ -81,7 +89,7 @@ footer{background:var(--navy);color:#d9dfe5;padding:25px 20px;text-align:center;
  <p class="notice" style="margin-top:18px">Uwaga: obecny prototyp nie tworzy prawdziwych kont ani nie wysyła danych do serwera. Nie wpisuj prawdziwego hasła ani poufnych informacji.</p>
 </section>
 </main>
-<footer>✝ PRZYSTANEK BOŻY · Miejsce wspólnej modlitwy<br>Prototyp demonstracyjny — treści i liczniki są przykładowe.</footer>
+<footer>✝ PRZYSTANEK BOŻY · Miejsce wspólnej modlitwy<br>Konfiguracja połączenia z Supabase została dodana. Formularze i tablica intencji nadal wymagają podłączenia do tabel bazy danych.</footer>
 <div class="modal" id="intentModal"><div class="dialog"><div class="dialoghead"><h2 style="font-weight:normal;margin:0">Powierz intencję</h2><button class="x" onclick="closeIntent()">×</button></div><p class="muted">Napisz tyle, ile chcesz. Możesz opublikować intencję publicznie albo zachować ją tylko dla siebie.</p>
 <form class="form" id="intentForm"><label>Twoja intencja<textarea id="intentText" maxlength="500" required placeholder="Proszę o modlitwę za..."></textarea></label><div class="row"><label>Podpis (opcjonalnie)<input id="intentName" maxlength="30" placeholder="np. Ania lub Anonim"></label><label>Widoczność<select id="intentPrivacy"><option value="public">Publiczna</option><option value="private">Prywatna</option></select></label></div><label class="muted" style="display:flex;grid-template-columns:20px 1fr;align-items:start"><input id="intentConsent" type="checkbox" required style="width:auto;margin:2px 0"> Potwierdzam, że mam prawo udostępnić tę treść i nie zawiera ona danych osobowych innych osób.</label><div class="notice">W prawdziwej usłudze intencje prywatne będą widoczne wyłącznie dla autora i uprawnionych administratorów. Tutaj to tylko demonstracja w tej przeglądarce.</div><button class="btn" type="submit">Dodaj intencję</button></form></div></div>
 <script>
